@@ -1,5 +1,9 @@
-<%= tag.div id: dom_id(record, :likes) do %>
-  <%= button_to like_button_text(record), [record, :like], method: :patch %>
+<%= turbo_frame_tag record, :likes do %>
+  <% if user_signed_in? %>
+    <%= button_to like_button_text(record), [record, :like], method: :patch %>
+  <% else %>
+    <%= link_to "Like", new_user_session_path, data: { turbo_frame: :_top } %>
+  <% end %>
   <%= record.likes_count %>
 
   <% record.likes.includes(:user).each do |like| %>
