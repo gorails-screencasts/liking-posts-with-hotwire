@@ -1,0 +1,39 @@
+<%= form_with(model: comment) do |form| %>
+  <% if comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+      <% comment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :user_id, class: 'form-label' %>
+      <%= form.text_field :user_id, class: 'form-control' %>
+    </div>
+
+  <div class="mb-3">
+    <%= form.label :body, class: 'form-label' %>
+      <%= form.text_area :body, class: 'form-control' %>
+    </div>
+
+  <div class="mb-3">
+    <% if comment.persisted? %>
+      <div class="float-end">
+        <%= link_to 'Destroy', comment, method: :delete, class: "text-danger", data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+
+    <%= form.submit class: 'btn btn-primary' %>
+
+    <% if comment.persisted? %>
+      <%= link_to "Cancel", comment, class: "btn btn-link" %>
+    <% else %>
+      <%= link_to "Cancel", comments_path, class: "btn btn-link" %>
+    <% end %>
+  </div>
+<% end %>

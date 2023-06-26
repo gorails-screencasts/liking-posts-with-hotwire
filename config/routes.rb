@@ -1,6 +1,14 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :comments do
+    resource :like, module: :comments, only: [:update]
+  end
+
+  resources :posts do
+    resource :like, module: :posts, only: [:update]
+  end
+
   get '/privacy', to: 'home#privacy'
   get '/terms', to: 'home#terms'
 authenticate :user, lambda { |u| u.admin? } do

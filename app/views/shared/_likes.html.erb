@@ -1,0 +1,8 @@
+<%= tag.div id: dom_id(record, :likes) do %>
+  <%= button_to like_button_text(record), [record, :like], method: :patch %>
+  <%= record.likes_count %>
+
+  <% record.likes.includes(:user).each do |like| %>
+    <%= image_tag avatar_path(like.user, size: 20) %>
+  <% end %>
+<% end %>
