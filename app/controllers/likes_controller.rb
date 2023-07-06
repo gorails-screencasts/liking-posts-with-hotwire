@@ -1,12 +1,8 @@
-module LikeableActions
-  extend ActiveSupport::Concern
+class LikesController < ApplicationController
+  include ActionView::RecordIdentifier
 
-  included do
-    include ActionView::RecordIdentifier
-
-    before_action :authenticate_user!
-    before_action :set_record
-  end
+  before_action :authenticate_user!
+  before_action :set_record
 
   def update
     if @record.liked_by?(current_user)
@@ -18,8 +14,10 @@ module LikeableActions
     render partial: "shared/likes", locals: {record: @record}
   end
 
+  private
+
   def set_record
-    name = controller_path.split("/").first.singularize
+    name = params.dig(:resource).singularize
     klass = name.classify.constantize
     param_name = "#{name}_id"
     @record = klass.find(params[param_name])

@@ -1,13 +1,11 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  resources :comments do
-    resource :like, module: :comments, only: [:update]
+  concern :likeable do
+    resource :like, only: [:update], defaults: {resource: @scope.frame.dig(:controller)}
   end
-
-  resources :posts do
-    resource :like, module: :posts, only: [:update]
-  end
+  resources :comments, concerns: :likeable
+  resources :posts, concerns: :likeable
 
   get '/privacy', to: 'home#privacy'
   get '/terms', to: 'home#terms'
