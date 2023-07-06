@@ -1,6 +1,10 @@
 module Likeable
   extend ActiveSupport::Concern
 
+  included do
+    has_many :likes, as: :record
+  end
+
   def liked_by?(user)
     likes.where(user: user).any?
   end
